@@ -370,36 +370,11 @@
                   ))}
                 </div>
 
-                {/* FEATURED PROJECT */}
+                {/* INSPIRATION QUOTE */}
                 <div className="bg-brand-card p-8 md:p-12 rounded-3xl border border-brand-accent/20 relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
                   
-                  <SectionHeading eyebrow="Featured Project" title={CONFIG.featuredProject.title} />
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-                    <div className="space-y-4">
-                      <div>
-                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Genre</div>
-                        <div className="font-medium">{CONFIG.featuredProject.genre}</div>
-                      </div>
-                      <div>
-                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Budget</div>
-                        <div className="font-medium">{CONFIG.featuredProject.budget}</div>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Locations</div>
-                        <div className="font-medium">{CONFIG.featuredProject.locations}</div>
-                      </div>
-                      <div>
-                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Schedule</div>
-                        <div className="font-medium">{CONFIG.featuredProject.schedule}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <blockquote className="mt-12 text-2xl md:text-3xl text-brand-text-pri font-serif italic text-center max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: '"Playfair Display", serif' }}>
+                  <blockquote className="text-2xl md:text-3xl text-brand-text-pri font-serif italic text-center max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: '"Playfair Display", serif' }}>
                     "To make a great film, you need three things: the script, the script, and the script."
                     <footer className="text-brand-accent text-sm font-sans not-italic font-semibold tracking-widest uppercase mt-6">
                       — Alfred Hitchcock
