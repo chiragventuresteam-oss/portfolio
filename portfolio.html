@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raghuvaran - Film Director & Concept Writer</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-bg': '#1A1714',
+            'brand-card': '#242019',
+            'brand-accent': '#D4A017',
+            'brand-accent-sec': '#8B2E2E',
+            'brand-text-pri': '#F5F1E8',
+            'brand-text-sec': '#A89F8C',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            body: ['"Manrope"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #1A1714;
+      color: #F5F1E8;
+      font-family: "Manrope", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Bebas Neue", sans-serif;
+      letter-spacing: 0.025em;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useRef } = React;
+    
+    // SVG Icons
+    const ChevronDown = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6"/></svg>;
+    const Lightbulb = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>;
+    const Users = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+    const Crosshair = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/></svg>;
+    const TrendingUp = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+    const MessageSquare = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+    const Clock = ({size=24, className=""}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+
+    const CONFIG = {
+      header: {
+        name: "RAGHUVARAN",
+        title: "FILM DIRECTOR & CONCEPT WRITER",
+        nav: ["Home", "About", "Resume", "Filmography", "Portfolio", "Contact"]
+      },
+      hero: {
+        intro: "Creative and visionary director with 4+ years of experience working primarily with independent film companies. Known for excellent communication and decision-making, with exceptional multi-tasking ability leading multi-functional teams to deliver quality films.",
+      },
+      about: {
+        info: [
+          { label: "Age", value: "39" },
+          { label: "Residence", value: "Chennai, India" },
+          { label: "Nationality", value: "Indian" },
+          { label: "Languages", value: "Tamil, Kannada, Telugu, Malayalam, Hindi, English" },
+          { label: "Availability", value: "Open to projects" },
+          { label: "Email", value: "raghuvarandance@gmail.com" }
+        ],
+        qualifications: [
+          { title: "Creative & Innovative", desc: "Fresh perspective on story and visual direction", icon: Lightbulb },
+          { title: "Team Leadership", desc: "Leading multi-functional crews on set", icon: Users },
+          { title: "Attention to Detail", desc: "Precision across every stage of production", icon: Crosshair },
+          { title: "Team Building & Development", desc: "Growing and mentoring crew members", icon: TrendingUp },
+          { title: "Communication", desc: "Clear coordination between departments and talent", icon: MessageSquare },
+          { title: "Time Management", desc: "Delivering on tight production schedules", icon: Clock },
+        ]
+      },
+      resume: {
+        experience: [
+          { year: "PRESENT", title: "First Assistant Director / Concept Writer", company: "Milton Photography", desc: "Led ad shoots, fashion campaigns, corporate films, and portfolio productions, overseeing creative direction and on-set coordination." }
+        ],
+        education: [
+          { year: "2011–2012", title: "B.Sc", company: "Christ University", desc: "Foundational studies before transitioning into direction and film production." }
+        ]
+      },
+      filmography: [
+        { title: "KALAVANI 2", role: "First Assistant Director" },
+        { title: "Untitled project starring Madhavan", role: "First Assistant Director" },
+        { title: "Kalavani 2 (Kannada remake)", role: "First Assistant Director" },
+        { title: "DANNY starring Varalakshmi Sarathkumar", role: "First Assistant Director (ongoing)" }
+      ],
+      mentors: [
+        { name: "Sargunam", desc: "National Award-winning director for 'Vaagai Sooda Vaa'" },
+        { name: "Sandhana Murthy", desc: "Director of 'DANNY' (ongoing project)" }
+      ],
+      featuredProject: {
+        title: "Onbathu Pulli Naalu Kodu",
+        genre: "Comedy, Drama, Humour, Superstition",
+        budget: "₹2.5 Cr (Tamil, new artists) / ₹3.5 Cr (Tamil & Kannada, new artists)",
+        locations: "London (3 days), Thanjavur (47 days)",
+        schedule: "Single schedule"
+      },
+      portfolio: [
+        { category: "Feature Film", title: "DANNY", image: "./danny.jpg" },
+        { category: "Feature Film", title: "Kalavani 2", image: "./images.jpeg" }
+      ],
+      contactInfo: {
+        name: "Raghuvaran",
+        title: "Film Director & Concept Writer",
+        residence: "Chennai, India",
+        phone: "9901509004",
+        email: "raghuvarandance@gmail.com"
+      }
+    };
+
+    const useScrollReveal = () => {
+      const ref = useRef(null);
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('opacity-100', 'translate-y-0');
+              entry.target.classList.remove('opacity-0', 'translate-y-8');
+            }
+          },
+          { threshold: 0.1 }
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => {
+          if (ref.current) observer.unobserve(ref.current);
+        };
+      }, []);
+      return ref;
+    };
+
+    const SectionHeading = ({ eyebrow, title }) => (
+      <div className="mb-12">
+        <span className="block text-brand-accent text-sm font-semibold tracking-[0.2em] uppercase mb-2">
+          {eyebrow}
+        </span>
+        <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wider text-brand-text-pri">
+          {title}
+        </h2>
+      </div>
+    );
+
+    const Section = ({ id, children, className = "" }) => {
+      const revealRef = useScrollReveal();
+      return (
+        <section 
+          id={id} 
+          ref={revealRef}
+          className={`py-12 md:py-20 px-6 md:px-16 transition-all duration-1000 ease-out opacity-0 translate-y-8 ${className}`}
+        >
+          {children}
+        </section>
+      );
+    };
+
+    function App() {
+      const [activeSection, setActiveSection] = useState('Home');
+
+      useEffect(() => {
+        const handleScroll = () => {
+          const sections = CONFIG.header.nav.map(n => document.getElementById(n.toLowerCase()));
+          const scrollPos = window.scrollY + 200;
+          for (const section of sections) {
+            if (section && section.offsetTop <= scrollPos && (section.offsetTop + section.offsetHeight) > scrollPos) {
+              setActiveSection(section.id.charAt(0).toUpperCase() + section.id.slice(1));
+            }
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      return (
+        <div className="flex flex-col lg:flex-row min-h-screen bg-brand-bg text-brand-text-pri font-body relative">
+          
+          {/* Navbar Pill (Desktop & Mobile) - Full Width */}
+          <div className="fixed top-4 md:top-6 left-0 w-full z-50 px-4 md:px-6 flex justify-center pointer-events-none">
+            <div className="bg-brand-card/90 backdrop-blur-md rounded-2xl w-full max-w-7xl px-4 py-3 md:p-4 flex flex-col md:flex-row items-center justify-between border border-white/5 shadow-xl shadow-black/20 pointer-events-auto">
+              <div className="font-display text-xl md:text-2xl tracking-widest text-white mb-2 md:mb-0">
+                {CONFIG.header.name}
+              </div>
+              
+              <nav className="flex w-full md:w-auto overflow-x-auto hide-scrollbar justify-start md:justify-center gap-6 md:gap-6 text-xs md:text-sm font-semibold tracking-wider uppercase text-brand-text-sec pb-1 md:pb-0">
+                {CONFIG.header.nav.map((item) => (
+                  <a 
+                    key={item} 
+                    href={`#${item.toLowerCase()}`}
+                    className={`flex-shrink-0 hover:text-brand-accent transition-colors ${activeSection.toLowerCase() === item.toLowerCase() ? 'text-brand-accent' : ''}`}
+                  >
+                    {item}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Left Panel: Sticky Image */}
+          <div className="lg:w-[40%] lg:fixed lg:h-screen bg-brand-card relative overflow-hidden h-[50vh] min-h-[400px] mt-28 lg:mt-0">
+            <div className="absolute inset-0 bg-[url('./raghu-headshot.jpg')] bg-contain bg-no-repeat bg-center">
+              {/* Duotone / Sepia overlay */}
+              <div className="absolute inset-0 bg-[#D4A017] mix-blend-multiply opacity-40"></div>
+              <div className="absolute inset-0 bg-black/30"></div>
+            </div>
+          </div>
+
+          {/* Right Panel: Content */}
+          <div className="lg:w-[60%] lg:ml-[40%] w-full relative">
+            
+            {/* MAIN CONTENT AREA */}
+            <main className="pb-24">
+              
+              {/* HERO */}
+              <Section id="home" className="lg:min-h-[80vh] flex flex-col justify-start lg:justify-center pt-8 lg:pt-20">
+                <h1 className="text-5xl md:text-8xl font-display uppercase tracking-tight text-white mb-4 leading-none">
+                  {CONFIG.header.name.split('').map((char, i) => (
+                    <span key={i} className="inline-block transition-transform hover:text-brand-accent">{char}</span>
+                  ))}
+                </h1>
+                <div className="text-brand-accent text-lg md:text-xl font-semibold tracking-[0.2em] uppercase mb-8">
+                  {CONFIG.header.title}
+                </div>
+                <p className="text-brand-text-sec text-lg md:text-xl leading-relaxed max-w-2xl mb-12">
+                  {CONFIG.hero.intro}
+                </p>
+                <div className="flex items-center gap-6">
+                  <a href="#contact" className="bg-brand-accent text-black px-8 py-4 rounded-full font-bold uppercase tracking-wider hover:bg-white transition-colors">
+                    Contact Me
+                  </a>
+                  <a href="#about" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-brand-text-pri hover:border-brand-accent hover:text-brand-accent transition-all animate-bounce">
+                    <ChevronDown size={24} />
+                  </a>
+                </div>
+              </Section>
+
+              {/* ABOUT */}
+              <Section id="about">
+                <SectionHeading eyebrow="About Me" title="Behind the Lens" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 bg-brand-card p-8 md:p-10 rounded-3xl border border-white/5">
+                  {CONFIG.about.info.map((info, idx) => (
+                    <div key={idx} className="flex flex-col">
+                      <span className="text-brand-text-sec text-xs uppercase tracking-widest font-bold mb-2">
+                        {info.label}
+                      </span>
+                      <span className="text-brand-text-pri text-lg font-medium">
+                        {info.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <h3 className="text-brand-accent text-sm font-semibold tracking-[0.2em] uppercase mb-8">
+                  What I Bring
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {CONFIG.about.qualifications.map((qual, idx) => {
+                    const Icon = qual.icon;
+                    return (
+                      <div key={idx} className="group bg-brand-card p-6 rounded-2xl border border-white/5 hover:border-brand-accent/50 transition-colors">
+                        <div className="w-12 h-12 rounded-full bg-brand-bg flex items-center justify-center text-brand-accent mb-4 group-hover:scale-110 transition-transform">
+                          <Icon size={20} />
+                        </div>
+                        <h4 className="text-xl font-bold mb-2">{qual.title}</h4>
+                        <p className="text-brand-text-sec text-sm leading-relaxed">{qual.desc}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Section>
+
+              {/* RESUME */}
+              <Section id="resume">
+                <SectionHeading eyebrow="My Journey" title="Experience & Education" />
+                
+                <div className="space-y-12">
+                  <div>
+                    <h3 className="text-2xl font-display uppercase tracking-widest mb-8 border-l-4 border-brand-accent pl-4">Experience</h3>
+                    <div className="space-y-8 pl-5 border-l-2 border-white/10 ml-2">
+                      {CONFIG.resume.experience.map((exp, idx) => (
+                        <div key={idx} className="relative">
+                          <div className="absolute w-4 h-4 rounded-full bg-brand-accent -left-[29px] top-1"></div>
+                          <div className="text-brand-accent text-sm font-bold tracking-wider mb-1">{exp.year}</div>
+                          <h4 className="text-xl font-bold">{exp.title}</h4>
+                          <div className="text-brand-text-sec text-sm font-semibold uppercase tracking-wider mb-3">{exp.company}</div>
+                          <p className="text-brand-text-sec leading-relaxed">{exp.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-display uppercase tracking-widest mb-8 border-l-4 border-brand-accent pl-4">Education</h3>
+                    <div className="space-y-8 pl-5 border-l-2 border-white/10 ml-2">
+                      {CONFIG.resume.education.map((edu, idx) => (
+                        <div key={idx} className="relative">
+                          <div className="absolute w-4 h-4 rounded-full bg-brand-text-sec -left-[29px] top-1"></div>
+                          <div className="text-brand-text-sec text-sm font-bold tracking-wider mb-1">{edu.year}</div>
+                          <h4 className="text-xl font-bold">{edu.title}</h4>
+                          <div className="text-brand-text-sec text-sm font-semibold uppercase tracking-wider mb-3">{edu.company}</div>
+                          <p className="text-brand-text-sec leading-relaxed">{edu.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Section>
+
+              {/* FILMOGRAPHY & FEATURED */}
+              <Section id="filmography">
+                <SectionHeading eyebrow="Body of Work" title="Filmography" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                  {CONFIG.filmography.map((film, idx) => (
+                    <div key={idx} className="bg-brand-card p-6 rounded-2xl border border-white/5 hover:bg-brand-accent/5 transition-colors">
+                      <h4 className="text-xl font-bold mb-1">{film.title}</h4>
+                      <p className="text-brand-accent text-sm font-semibold uppercase tracking-wider">{film.role}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <h3 className="text-brand-accent text-sm font-semibold tracking-[0.2em] uppercase mb-8">
+                  Mentors
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
+                  {CONFIG.mentors.map((mentor, idx) => (
+                    <div key={idx} className="flex gap-4 items-start">
+                      <div className="w-12 h-12 rounded-full bg-brand-card flex items-center justify-center flex-shrink-0 text-xl font-display">
+                        {mentor.name.charAt(0)}
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold">{mentor.name}</h4>
+                        <p className="text-brand-text-sec text-sm">{mentor.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* FEATURED PROJECT */}
+                <div className="bg-brand-card p-8 md:p-12 rounded-3xl border border-brand-accent/20 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                  
+                  <SectionHeading eyebrow="Featured Project" title={CONFIG.featuredProject.title} />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Genre</div>
+                        <div className="font-medium">{CONFIG.featuredProject.genre}</div>
+                      </div>
+                      <div>
+                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Budget</div>
+                        <div className="font-medium">{CONFIG.featuredProject.budget}</div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Locations</div>
+                        <div className="font-medium">{CONFIG.featuredProject.locations}</div>
+                      </div>
+                      <div>
+                        <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-1">Schedule</div>
+                        <div className="font-medium">{CONFIG.featuredProject.schedule}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <blockquote className="mt-12 text-2xl md:text-3xl text-brand-text-pri font-serif italic text-center max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: '"Playfair Display", serif' }}>
+                    "To make a great film, you need three things: the script, the script, and the script."
+                    <footer className="text-brand-accent text-sm font-sans not-italic font-semibold tracking-widest uppercase mt-6">
+                      — Alfred Hitchcock
+                    </footer>
+                  </blockquote>
+                </div>
+              </Section>
+
+              {/* PORTFOLIO / GALLERY */}
+              <Section id="portfolio">
+                <SectionHeading eyebrow="Gallery" title="Portfolio" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {CONFIG.portfolio.map((item, idx) => (
+                    <div key={idx} className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-card cursor-pointer">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                      
+                      <div className="absolute bottom-0 left-0 p-6 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                        <span className="text-brand-accent text-xs font-semibold tracking-widest uppercase block mb-2">
+                          {item.category}
+                        </span>
+                        <h4 className="text-2xl font-bold text-white">{item.title}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+
+              {/* CONTACT */}
+              <Section id="contact" className="text-center">
+                <div className="flex flex-col items-center">
+                  <SectionHeading eyebrow="Get In Touch" title="Contact Me" />
+                </div>
+                
+                <div className="max-w-4xl mx-auto bg-brand-card p-10 md:p-16 rounded-3xl border border-brand-accent/20 mt-8">
+                  <h3 className="text-3xl md:text-5xl font-display tracking-widest text-white mb-4">{CONFIG.contactInfo.name}</h3>
+                  <p className="text-brand-accent text-sm md:text-base font-semibold uppercase tracking-widest mb-16">{CONFIG.contactInfo.title}</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center border-t border-white/5 pt-16">
+                    <div className="flex flex-col items-center">
+                      <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-3">Residence</div>
+                      <div className="text-xl font-medium text-white">{CONFIG.contactInfo.residence}</div>
+                    </div>
+                    
+                    <div className="flex flex-col items-center">
+                      <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-3">Phone</div>
+                      <div className="text-xl font-medium text-white">{CONFIG.contactInfo.phone}</div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      <div className="text-brand-text-sec text-xs font-semibold uppercase tracking-widest mb-3">Email</div>
+                      <div className="text-xl font-medium text-brand-accent hover:text-white transition-colors">
+                        <a href={`mailto:${CONFIG.contactInfo.email}`}>{CONFIG.contactInfo.email}</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Section>
+              
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
